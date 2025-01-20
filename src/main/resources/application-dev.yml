@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: spring-boot-jooq
+  datasource:
+    url: jdbc:${DB_BASE}://${DB_SERVER}:${DB_PORT}/${DB_NAME}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+  liquibase:
+    enabled: true
+    change-log: db/changelog/db.changelog-master.xml
