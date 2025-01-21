@@ -1,0 +1,5 @@
+# Example gradle.properties
+# Replace these values with actual ones in your local gradle.properties file
+postgres.url=jdbc:postgresql://localhost:5432/mydb
+postgres.username=username
+postgres.password=password

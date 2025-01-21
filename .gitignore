@@ -41,3 +41,6 @@ out/
 
 ### Docker ###
 docker-compose.yml
+
+### Gradle ###
+gradle.properties

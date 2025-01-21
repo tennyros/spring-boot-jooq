@@ -2,6 +2,7 @@ plugins {
     id 'java'
     id 'org.springframework.boot' version '3.4.1'
     id 'io.spring.dependency-management' version '1.1.7'
+    id 'nu.studer.jooq' version '8.2'
 }
 
 group = 'com.github.tennyros'
@@ -21,9 +22,46 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
     implementation 'org.springframework.boot:spring-boot-starter-jooq'
     implementation 'org.liquibase:liquibase-core'
+    implementation 'org.slf4j:slf4j-api:2.0.16'
+    implementation 'org.projectlombok:lombok'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springdoc:springdoc-openapi-ui:1.6.11'
     runtimeOnly 'org.postgresql:postgresql:42.7.5'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    implementation 'org.jooq:jooq:3.17.0'
+    jooqGenerator "jakarta.xml.bind:jakarta.xml.bind-api:3.0.1"
+    jooqGenerator "org.postgresql:postgresql"
+    annotationProcessor 'org.projectlombok:lombok'
+}
+
+jooq {
+    version = '3.17.0'
+
+    configurations {
+        main {
+            generationTool {
+                jdbc {
+                    driver = "org.postgresql.Driver"
+                    url = project.properties['postgres.url']
+                    user = project.properties['postgres.username']
+                    password = project.properties['postgres.password']
+                }
+                generator {
+                    name = "org.jooq.codegen.JavaGenerator"
+                    database {
+                        name = "org.jooq.meta.postgres.PostgresDatabase"
+                        inputSchema = "public"
+                        includes = "user"
+                    }
+                    target {
+                        packageName = "com.example.generated"
+                        directory = "build/generated/source/jooq/main"
+                    }
+                }
+            }
+        }
+    }
 }
 
 tasks.named('test') {
