@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: spring-boot-jooq-test
+  datasource:
+    driverClassName: org.postgresql.Driver
+  jooq:
+    sql-dialect: postgres
+  liquibase:
+    enabled: true
+    change-log: db/changelog/db.changelog-master.xml
