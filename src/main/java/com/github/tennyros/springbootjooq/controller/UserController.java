@@ -1,8 +1,8 @@
 package com.github.tennyros.springbootjooq.controller;
 
-import com.example.generated.tables.records.UserRecord;
 import com.github.tennyros.springbootjooq.dto.UserDto;
 import com.github.tennyros.springbootjooq.service.UserService;
+import com.github.tennyros.tables.records.AppUserRecord;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -25,7 +25,7 @@ public class UserController {
 
     @PostMapping
     public ResponseEntity<UserDto> createUser(@RequestParam String username, @RequestParam String email) {
-        UserRecord createdUser = service.addUser(username, email);
+        AppUserRecord createdUser = service.addUser(username, email);
         log.info("Created user: {}, with email: {}", username, email);
         UserDto userDto = new UserDto(createdUser.getId(), createdUser.getUsername(), createdUser.getEmail());
         return ResponseEntity.status(HttpStatus.CREATED).body(userDto);
@@ -33,7 +33,7 @@ public class UserController {
 
     @GetMapping
     public ResponseEntity<List<UserDto>> getAllUsers() {
-        List<UserRecord> userRecords = service.listUsers();
+        List<AppUserRecord> userRecords = service.listUsers();
         if (userRecords.isEmpty()) {
             return ResponseEntity.noContent().build();
         }

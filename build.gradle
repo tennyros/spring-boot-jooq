@@ -1,7 +1,19 @@
+buildscript {
+    repositories {
+        mavenCentral()
+        google()
+        gradlePluginPortal()
+    }
+    dependencies {
+        classpath 'org.liquibase:liquibase-core:4.26.0'
+    }
+}
+
 plugins {
     id 'java'
     id 'org.springframework.boot' version '3.4.1'
     id 'io.spring.dependency-management' version '1.1.7'
+    id 'org.liquibase.gradle' version '2.2.2'
     id 'nu.studer.jooq' version '8.2'
 }
 
@@ -19,15 +31,14 @@ repositories {
 }
 
 dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-jooq'
-    implementation 'org.liquibase:liquibase-core'
+    implementation 'org.liquibase:liquibase-core:4.26.0'
     implementation 'org.slf4j:slf4j-api:2.0.16'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0'
     runtimeOnly 'org.postgresql:postgresql:42.7.5'
-    implementation 'org.jooq:jooq:3.17.0'
-    jooqGenerator "jakarta.xml.bind:jakarta.xml.bind-api:3.0.1"
+    implementation 'org.jooq:jooq:3.19.0'
     jooqGenerator "org.postgresql:postgresql"
     implementation 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
@@ -36,27 +47,35 @@ dependencies {
     testImplementation 'org.testcontainers:testcontainers:1.20.4'
     testImplementation 'org.testcontainers:postgresql:1.20.4'
     testImplementation 'org.testcontainers:junit-jupiter:1.20.4'
+    liquibaseRuntime 'info.picocli:picocli:4.7.5'
+    liquibaseRuntime 'org.liquibase:liquibase-core:4.26.0'
+    liquibaseRuntime 'org.liquibase:liquibase-groovy-dsl:3.0.2'
+    liquibaseRuntime 'org.postgresql:postgresql:42.7.5'
 }
 
-configurations.configureEach {
-    resolutionStrategy.eachDependency { DependencyResolveDetails details ->
-        if (details.requested.group == 'org.apache.commons' && details.requested.name == 'commons-compress') {
-            details.useVersion '1.26.0'
+liquibase {
+    activities {
+        register('main') {
+            changelogFile project.properties['liquibase.changelogFile']
+            url project.properties['properties.url']
+            username project.properties['properties.username']
+            password project.properties['properties.password']
+            driver project.properties['properties.driver']
         }
     }
 }
 
 jooq {
-    version = '3.17.0'
+    version = '3.19.0'
 
     configurations {
         main {
             generationTool {
                 jdbc {
-                    driver = project.properties['postgres.driver']
-                    url = project.properties['postgres.url']
-                    user = project.properties['postgres.username']
-                    password = project.properties['postgres.password']
+                    driver = project.properties['properties.driver']
+                    url = project.properties['properties.url']
+                    user = project.properties['properties.username']
+                    password = project.properties['properties.password']
                 }
                 generator {
                     name = project.properties['jooq.generator.name']
@@ -74,6 +93,8 @@ jooq {
         }
     }
 }
+
+tasks.build.dependsOn(generateJooq)
 
 tasks.named('test') {
     useJUnitPlatform()

@@ -1,7 +1,6 @@
 package com.github.tennyros.springbootjooq.repository;
 
-import com.example.generated.Tables;
-import com.example.generated.tables.records.UserRecord;
+import com.github.tennyros.tables.records.AppUserRecord;
 import lombok.RequiredArgsConstructor;
 
 import org.jooq.DSLContext;
@@ -9,22 +8,24 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+import static com.github.tennyros.Tables.APP_USER;
+
 @Repository
 @RequiredArgsConstructor
 public class UserRepository {
 
     private final DSLContext dsl;
 
-    public UserRecord createUser(UserRecord userRecord) {
+    public AppUserRecord createUser(AppUserRecord userRecord) {
         return dsl
-                .insertInto(Tables.USER)
-                .set(Tables.USER.USERNAME, userRecord.getUsername())
-                .set(Tables.USER.EMAIL, userRecord.getEmail())
+                .insertInto(APP_USER)
+                .set(APP_USER.USERNAME, userRecord.getUsername())
+                .set(APP_USER.EMAIL, userRecord.getEmail())
                 .returning()
                 .fetchOne();
     }
 
-    public List<UserRecord> getAllUsers() {
-        return dsl.selectFrom(Tables.USER).fetchInto(UserRecord.class);
+    public List<AppUserRecord> getAllUsers() {
+        return dsl.selectFrom(APP_USER).fetchInto(AppUserRecord.class);
     }
 }
