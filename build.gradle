@@ -61,6 +61,7 @@ liquibase {
             username project.properties['properties.username']
             password project.properties['properties.password']
             driver project.properties['properties.driver']
+            searchPath project.properties['liquibase.searchPath']
         }
     }
 }

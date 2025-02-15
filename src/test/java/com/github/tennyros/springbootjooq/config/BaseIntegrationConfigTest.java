@@ -16,12 +16,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 public abstract class BaseIntegrationConfigTest {
 
     @Container
-    public static PostgreSQLContainer<?> container = new PostgreSQLContainer<>("postgres:15-alpine")
-//            .withDatabaseName("users_db")
-//            .withUsername("postgres")
-//            .withPassword("root")
-//            .withExposedPorts(port)
-            ;
+    public static PostgreSQLContainer<?> container = new PostgreSQLContainer<>("postgres:15-alpine");
 
     @DynamicPropertySource
     public static void overrideProperties(DynamicPropertyRegistry registry) {
