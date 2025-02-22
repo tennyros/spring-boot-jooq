@@ -37,7 +37,7 @@ public class UserController {
         if (userRecords.isEmpty()) {
             return ResponseEntity.noContent().build();
         }
-        log.info("List of users: {}", userRecords);
+        log.info("\nList of users:\n{}", userRecords);
         List<UserDto> userDtos = userRecords.stream()
                 .map(rec -> new UserDto(rec.getId(), rec.getUsername(), rec.getEmail()))
                 .toList();

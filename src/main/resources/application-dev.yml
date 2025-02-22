@@ -8,3 +8,6 @@ spring:
   liquibase:
     enabled: true
     change-log: db/changelog/db.changelog-master.xml
+  mvc:
+    servlet:
+      path: /api

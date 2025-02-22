@@ -1,6 +1,6 @@
 ### After cloning the project you need to:
 
-#### - make a copy of 'gradle.properties' (like cp liquibase.properties.example liquibase.properties) file and set your credentials according sample;
+#### - make a copy of 'gradle.properties' (like 'cp gradle.properties.example gradle.properties') file and set your credentials according sample;
 
 #### - specify in run/debug configurations in your IDEA for Main.java:
 - VM options, for example: 
@@ -19,5 +19,3 @@
 
 #### - generate jooq classes by running the command in root directory of the project:
 - ./gradlew generateJooq;
-
-#### - carefully manage include blocks in changelog-master.xml files.
