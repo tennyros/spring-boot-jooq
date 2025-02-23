@@ -7,7 +7,6 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.PostgreSQLContainer;
-import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 @Testcontainers
@@ -15,8 +14,15 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 @SpringBootTest(classes = SpringBootJooqApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public abstract class BaseIntegrationConfigTest {
 
-    @Container
-    public static PostgreSQLContainer<?> container = new PostgreSQLContainer<>("postgres:15-alpine");
+    public static PostgreSQLContainer<?> container = new PostgreSQLContainer<>("postgres:15-alpine")
+            .withDatabaseName("app_user")
+            .withUsername("postgres")
+            .withPassword("root")
+            .withReuse(true);
+
+    static {
+        container.start();
+    }
 
     @DynamicPropertySource
     public static void overrideProperties(DynamicPropertyRegistry registry) {
@@ -26,7 +32,7 @@ public abstract class BaseIntegrationConfigTest {
     }
 
     @BeforeAll
-    public static void startContainer() {
+    static void startContainer() {
         container.start();
     }
 }

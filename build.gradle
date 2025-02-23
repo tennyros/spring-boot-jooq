@@ -1,20 +1,10 @@
-buildscript {
-    repositories {
-        mavenCentral()
-        google()
-        gradlePluginPortal()
-    }
-    dependencies {
-        classpath 'org.liquibase:liquibase-core:4.26.0'
-    }
-}
-
 plugins {
     id 'java'
     id 'org.springframework.boot' version '3.4.1'
     id 'io.spring.dependency-management' version '1.1.7'
     id 'org.liquibase.gradle' version '2.2.2'
     id 'nu.studer.jooq' version '8.2'
+    id 'jacoco'
 }
 
 group = 'com.github.tennyros'
@@ -28,6 +18,8 @@ java {
 
 repositories {
     mavenCentral()
+    google()
+    gradlePluginPortal()
 }
 
 dependencies {
@@ -44,9 +36,14 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-    testImplementation 'org.testcontainers:testcontainers:1.20.4'
-    testImplementation 'org.testcontainers:postgresql:1.20.4'
-    testImplementation 'org.testcontainers:junit-jupiter:1.20.4'
+    testImplementation 'org.testcontainers:testcontainers:1.20.5'
+    testImplementation('org.apache.commons:commons-compress') {
+        version {
+            strictly '1.26.0'
+        }
+    }
+    testImplementation 'org.testcontainers:postgresql:1.20.5'
+    testImplementation 'org.testcontainers:junit-jupiter:1.20.5'
     liquibaseRuntime 'info.picocli:picocli:4.7.5'
     liquibaseRuntime 'org.liquibase:liquibase-core:4.26.0'
     liquibaseRuntime 'org.liquibase:liquibase-groovy-dsl:3.0.2'
@@ -97,6 +94,29 @@ jooq {
 
 tasks.build.dependsOn(generateJooq)
 
+jacoco {
+    toolVersion = "0.8.11" // Версия JaCoCo
+}
+
 tasks.named('test') {
     useJUnitPlatform()
+    finalizedBy jacocoTestReport // Генерация отчёта после тестов
+}
+
+tasks.named('jacocoTestReport') {
+    dependsOn tasks.named('test')
+
+    reports {
+        xml.required.set(true)
+        html.required.set(true)
+        csv.required.set(false)
+    }
+
+    executionData.setFrom(fileTree(rootProject.layout.buildDirectory).include("/jacoco/*.exec"))
+//
+//    sourceSets {
+//        main {
+//            java.srcDirs = files("src/main/java")
+//        }
+//    }
 }

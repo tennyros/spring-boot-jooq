@@ -1,1 +1,1 @@
-TRUNCATE app_user;
+TRUNCATE TABLE app_user CASCADE;
