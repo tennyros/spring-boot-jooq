@@ -1,12 +1,16 @@
 package com.github.tennyros.springbootjooq;
 
 import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
 
-@SpringBootTest(properties = "spring.profiles.active=test")
+@RunWith(SpringRunner.class)
+@SpringBootTest(properties = "spring.profiles.active=test", webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class SpringBootJooqApplicationTests {
 
     @Test
     void contextLoads() {
+        // do nothing
     }
 }

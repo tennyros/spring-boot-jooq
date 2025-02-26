@@ -92,15 +92,16 @@ jooq {
     }
 }
 
+tasks.generateJooq.dependsOn(update)
 tasks.build.dependsOn(generateJooq)
 
 jacoco {
-    toolVersion = "0.8.11" // Версия JaCoCo
+    toolVersion = "0.8.11"
 }
 
 tasks.named('test') {
     useJUnitPlatform()
-    finalizedBy jacocoTestReport // Генерация отчёта после тестов
+    finalizedBy jacocoTestReport
 }
 
 tasks.named('jacocoTestReport') {
@@ -109,14 +110,16 @@ tasks.named('jacocoTestReport') {
     reports {
         xml.required.set(true)
         html.required.set(true)
-        csv.required.set(false)
+        csv.required.set(true)
     }
 
+    classDirectories.setFrom(files(classDirectories.files.collect {
+        fileTree(dir: it, exclude: [
+                '**/dto/**',
+                '**/jooq/**',
+                '**/SpringBootJooqApplication.class'
+        ])
+    }))
+
     executionData.setFrom(fileTree(rootProject.layout.buildDirectory).include("/jacoco/*.exec"))
-//
-//    sourceSets {
-//        main {
-//            java.srcDirs = files("src/main/java")
-//        }
-//    }
 }

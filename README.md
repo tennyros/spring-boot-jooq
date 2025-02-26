@@ -1,3 +1,13 @@
+# Spring-boot-JOOQ demo
+
+![CI with Gradle](https://github.com/tennyros/spring-boot-jooq/workflows/CI%20Pipeline%20with%20Gradle/badge.svg)
+![Coverage](https://github.com/tennyros/spring-boot-jooq/raw/coverage-badge/.github/badges/jacoco.svg)
+
+## Prerequisites
+
+- Gradle 8.11.1
+- JDK 17
+
 ### After cloning the project you need to:
 
 #### - make a copy of 'gradle.properties' (like 'cp gradle.properties.example gradle.properties') file and set your credentials according sample;
@@ -12,10 +22,6 @@
   - DB_PORT=1234;
   - DB_SERVER=localhost;
   - DB_USERNAME=your_username;
-  ##### (similar to MainTest.java, but for VM: -Dspring.profiles.active=test)
   
-#### - create tables in the database by running command in root directory of the project:
-- ./gradlew update;
-
-#### - generate jooq classes by running the command in root directory of the project:
-- ./gradlew generateJooq;
+### How to build:
+- ./gradlew build;

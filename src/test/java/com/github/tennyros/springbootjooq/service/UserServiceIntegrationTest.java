@@ -1,7 +1,7 @@
 package com.github.tennyros.springbootjooq.service;
 
 import com.github.tennyros.springbootjooq.config.BaseIntegrationConfigTest;
-import com.github.tennyros.tables.records.AppUserRecord;
+import jooq.tables.records.AppUserRecord;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.jdbc.Sql;

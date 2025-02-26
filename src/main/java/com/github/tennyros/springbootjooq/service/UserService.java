@@ -1,7 +1,7 @@
 package com.github.tennyros.springbootjooq.service;
 
 import com.github.tennyros.springbootjooq.repository.UserRepository;
-import com.github.tennyros.tables.records.AppUserRecord;
+import jooq.tables.records.AppUserRecord;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

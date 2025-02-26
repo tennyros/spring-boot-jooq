@@ -2,7 +2,7 @@ package com.github.tennyros.springbootjooq.controller;
 
 import com.github.tennyros.springbootjooq.dto.UserDto;
 import com.github.tennyros.springbootjooq.service.UserService;
-import com.github.tennyros.tables.records.AppUserRecord;
+import jooq.tables.records.AppUserRecord;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -17,8 +17,8 @@ import java.util.List;
 
 @Slf4j
 @RestController
-@RequestMapping("/users")
 @RequiredArgsConstructor
+@RequestMapping("/users")
 public class UserController {
 
     private final UserService service;

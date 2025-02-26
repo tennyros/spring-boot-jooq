@@ -1,6 +1,6 @@
 package com.github.tennyros.springbootjooq.repository;
 
-import com.github.tennyros.tables.records.AppUserRecord;
+import jooq.tables.records.AppUserRecord;
 import lombok.RequiredArgsConstructor;
 
 import org.jooq.DSLContext;
@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-import static com.github.tennyros.Tables.APP_USER;
+import static jooq.Tables.APP_USER;
 
 @Repository
 @RequiredArgsConstructor
