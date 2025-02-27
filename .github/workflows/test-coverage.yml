@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - ci-issues
+      - feature/*
+      - hotfix/*
   pull_request:
     branches:
       - dev
@@ -50,9 +52,6 @@ jobs:
 
       - name: Set up Gradle
         uses: gradle/wrapper-validation-action@v1
-
-#      - name: PostgreSQL start
-#        run: docker run -d -p 5433:5432 -e POSTGRES_DB=users_db -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=root postgres:15
 
       - name: Create `gradle.properties` from GitHub Secrets
         run: echo "${{ secrets.SPRING_BOOT_JOOQ_DEMO_ENV_VARS }}" > gradle.properties
