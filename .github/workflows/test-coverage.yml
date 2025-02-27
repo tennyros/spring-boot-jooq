@@ -11,6 +11,21 @@ jobs:
   test:
     runs-on: ubuntu-latest
 
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_DB: users_db
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: root
+        ports:
+          - 5433:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres -d users_db"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -31,6 +46,9 @@ jobs:
 
       - name: Set up Gradle
         uses: gradle/wrapper-validation-action@v1
+
+#      - name: PostgreSQL start
+#        run: docker run -d -p 5433:5432 -e POSTGRES_DB=users_db -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=root postgres:15
 
       - name: Create `gradle.properties` from GitHub Secrets
         run: echo "${{ secrets.SPRING_BOOT_JOOQ_DEMO_ENV_VARS }}" > gradle.properties
