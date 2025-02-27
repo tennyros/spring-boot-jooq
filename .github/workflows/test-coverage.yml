@@ -78,9 +78,11 @@ jobs:
         run: |
           git config --global user.name 'github-actions'
           git config --global user.email 'github-actions@github.com'
+          git stash -u || true
           git fetch origin coverage-badge:coverage-badge
           git checkout -b coverage-badge || git checkout coverage-badge
           git status
+          git stash pop || true
           git add .github/badges/jacoco.svg
           
           if git diff --cached --quiet; then
