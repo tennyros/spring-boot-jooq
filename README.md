@@ -5,7 +5,7 @@
 
 ## Prerequisites
 
-- Gradle 8.11.1
+- Gradle 8.11
 - JDK 17
 
 ### After cloning the project you need to:
@@ -17,7 +17,7 @@
   - -Dspring.profiles.active=dev
 - environment variables, like: 
   - DB_BASE=postgresql;
-  - DB_NAME=your_db_name;
+  - DB_NAME=your_db_name;пш
   - DB_PASSWORD=your_password;
   - DB_PORT=1234;
   - DB_SERVER=localhost;
