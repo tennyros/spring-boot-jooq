@@ -17,7 +17,7 @@
   - -Dspring.profiles.active=dev
 - environment variables, like: 
   - DB_BASE=postgresql;
-  - DB_NAME=your_db_name;пш
+  - DB_NAME=your_db_name;
   - DB_PASSWORD=your_password;
   - DB_PORT=1234;
   - DB_SERVER=localhost;
