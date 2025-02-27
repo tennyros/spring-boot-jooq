@@ -3,13 +3,34 @@ name: CI Pipeline with Gradle
 on:
   push:
     branches:
-      - dev
+      - ci-issues
+      - feature/*
+      - hotfix/*
   pull_request:
     branches:
       - dev
+
+permissions:
+  contents: write
+
 jobs:
   test:
     runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_DB: users_db
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: root
+        ports:
+          - 5433:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres -d users_db"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
 
     steps:
       - name: Checkout code
@@ -31,6 +52,9 @@ jobs:
 
       - name: Set up Gradle
         uses: gradle/wrapper-validation-action@v1
+
+      - name: Create `gradle.properties` from GitHub Secrets
+        run: echo "${{ secrets.SPRING_BOOT_JOOQ_DEMO_ENV_VARS }}" > gradle.properties
 
       - name: Run tests with Gradle
         run: ./gradlew test
@@ -54,12 +78,16 @@ jobs:
         run: |
           git config --global user.name 'github-actions'
           git config --global user.email 'github-actions@github.com'
+          git stash -u || true
+          git fetch origin coverage-badge:coverage-badge
           git checkout -b coverage-badge || git checkout coverage-badge
+          git status
+          git stash pop || true
           git add .github/badges/jacoco.svg
-
+          
           if git diff --cached --quiet; then
             echo "No changes to commit"
           else
             git commit -m "Update test coverage badge"
-            git push origin coverage-badge --force-with-lease
+            git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/tennyros/spring-boot-jooq.git coverage-badge --force-with-lease
           fi
