@@ -44,3 +44,6 @@ docker-compose.yml
 
 ### Gradle ###
 gradle.properties
+
+### GitHub act local ###
+.secrets

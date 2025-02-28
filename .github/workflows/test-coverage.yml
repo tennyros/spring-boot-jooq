@@ -16,6 +16,12 @@ permissions:
 jobs:
   test:
     runs-on: ubuntu-latest
+    environment:
+      name: telegram-notifications
+
+    concurrency:
+      group: ci-${{ github.ref }}
+      cancel-in-progress: true
 
     services:
       postgres:
@@ -42,16 +48,26 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
+      - name: Remove old Gradle cache (older than 30 days)
+        run: |
+          if [ -d ~/.gradle/caches ]; then
+            find ~/.gradle/caches -type f -mtime +30 -delete
+          else
+            echo "Gradle cache directory does not exist, skipping cleanup."
+          fi
+
+      - name: Ensure Gradle Wrapper is executable
+        run: chmod +x gradlew
+
       - name: Cache Gradle dependencies
         uses: actions/cache@v3
         with:
-          path: ~/.gradle/caches
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          path: |
+            ~/.gradle/caches/modules-2
+            ~/.gradle/caches/jars-8
+          key: gradle-${{ runner.os }}-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
           restore-keys: |
-            ${{ runner.os }}-gradle-
-
-      - name: Set up Gradle
-        uses: gradle/wrapper-validation-action@v1
+            gradle-${{ runner.os }}-
 
       - name: Create `gradle.properties` from GitHub Secrets
         run: echo "${{ secrets.SPRING_BOOT_JOOQ_DEMO_ENV_VARS }}" > gradle.properties
@@ -91,3 +107,24 @@ jobs:
             git commit -m "Update test coverage badge"
             git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/tennyros/spring-boot-jooq.git coverage-badge --force-with-lease
           fi
+
+      - name: Send Telegram notification
+        if: always()
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          STATUS="${{ job.status }}"
+          
+          MESSAGE="🚀 CI Pipeline Status: ${STATUS}
+          
+          Project: \#$(basename ${{ github.repository }} | sed 's/-/\\-/g')
+          Branch: \`${{ github.ref }}\`
+          Commit: \`${{ github.sha }}\`
+          
+          [Details](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})"
+          
+          curl -s -X POST "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" \
+          -d "chat_id=${TELEGRAM_CHAT_ID}" \
+          -d "text=${MESSAGE}" \
+          -d "parse_mode=MarkdownV2"
