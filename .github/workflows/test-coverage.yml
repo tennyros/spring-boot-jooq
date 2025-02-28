@@ -98,9 +98,15 @@ jobs:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         run: |
-          MESSAGE="🚀 CI Pipeline Status: ${{ job.status }}\n\nProject: ${{ github.repository }} #${{ github.repository }}\nBranch: ${{ github.ref }}\nCommit: ${{ github.sha }}\n\nDetails: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
-
-          curl -s -X POST "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" \
+          MESSAGE="🚀 CI Pipeline Status: ${{ job.status }}
+          
+          Project: #$(basename ${{ github.repository }})
+          Branch: ${{ github.ref }}
+          Commit: ${{ github.sha }}
+          
+          Details: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+            
+            curl -s -X POST "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" \
             -d "chat_id=${TELEGRAM_CHAT_ID}" \
             -d "text=${MESSAGE}" \
-            -d "parse_mode=Markdown"
+            -d "parse_mode=MarkdownV2"
