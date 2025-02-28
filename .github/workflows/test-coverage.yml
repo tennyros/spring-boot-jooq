@@ -43,13 +43,18 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
+      - name: Remove old Gradle cache (older than 30 days)
+        run: find ~/.gradle/caches -type f -mtime +30 -delete
+
       - name: Cache Gradle dependencies
         uses: actions/cache@v3
         with:
-          path: ~/.gradle/caches
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          path: |
+            ~/.gradle/caches/modules-2
+            ~/.gradle/caches/jars-8
+          key: gradle-${{ runner.os }}-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
           restore-keys: |
-            ${{ runner.os }}-gradle-
+            gradle-${{ runner.os }}-
 
       - name: Set up Gradle
         uses: gradle/wrapper-validation-action@v1
