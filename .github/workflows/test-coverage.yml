@@ -51,6 +51,9 @@ jobs:
             echo "Gradle cache directory does not exist, skipping cleanup."
           fi
 
+      - name: Ensure Gradle Wrapper is executable
+        run: chmod +x gradlew
+
       - name: Cache Gradle dependencies
         uses: actions/cache@v3
         with:
@@ -104,7 +107,7 @@ jobs:
           fi
 
       - name: Send Telegram notification
-        if: always()  # Выполнится даже при неудачном этапе
+        if: always()
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
