@@ -20,6 +20,10 @@ jobs:
       name: telegram-notifications
       url: ""
 
+    env:
+      PROJECT_NAME: "spring-boot-jooq"
+      PROJECT_HASHTAG: "spring_boot_jooq"
+
     services:
       postgres:
         image: postgres:15
@@ -118,7 +122,7 @@ jobs:
           
           MESSAGE="🚀 CI Pipeline Status: ${STATUS}
           
-          Project: \#$(basename ${{ github.repository }} | sed 's/-/\\-/g')
+          Project: #${{ env.PROJECT_HASHTAG }}
           Branch: \`${{ github.ref }}\`
           Commit: \`${{ github.sha }}\`
           
