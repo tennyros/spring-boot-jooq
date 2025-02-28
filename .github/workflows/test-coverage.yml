@@ -16,13 +16,6 @@ permissions:
 jobs:
   test:
     runs-on: ubuntu-latest
-    environment:
-      name: telegram-notifications
-      url: ""
-
-    env:
-      PROJECT_NAME: "spring-boot-jooq"
-      PROJECT_HASHTAG: "spring_boot_jooq"
 
     services:
       postgres:
