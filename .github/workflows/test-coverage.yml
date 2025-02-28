@@ -16,7 +16,9 @@ permissions:
 jobs:
   test:
     runs-on: ubuntu-latest
-    environment: telegram-notifications
+    environment:
+      name: telegram-notifications
+      url: ""
 
     services:
       postgres:
