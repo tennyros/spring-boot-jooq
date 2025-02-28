@@ -115,7 +115,7 @@ jobs:
           
           MESSAGE="🚀 CI Pipeline Status: ${STATUS}
           
-          Project: #${{ env.PROJECT_HASHTAG }}
+          Project: \#$(basename ${{ github.repository }} | sed 's/-/\\-/g')
           Branch: \`${{ github.ref }}\`
           Commit: \`${{ github.sha }}\`
           
