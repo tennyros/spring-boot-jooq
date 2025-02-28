@@ -16,6 +16,12 @@ permissions:
 jobs:
   test:
     runs-on: ubuntu-latest
+    environment:
+      name: telegram-notifications
+
+    concurrency:
+      group: ci-${{ github.ref }}
+      cancel-in-progress: true
 
     services:
       postgres:
@@ -108,7 +114,7 @@ jobs:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         run: |
-          STATUS="${{ job.status }}"  # Получаем статус джоба
+          STATUS="${{ job.status }}"
           
           MESSAGE="🚀 CI Pipeline Status: ${STATUS}
           
