@@ -100,7 +100,7 @@ jobs:
         run: |
           MESSAGE="🚀 CI Pipeline Status: ${{ job.status }}
           
-          Project: \#$(basename ${{ github.repository }})
+          Project: \#$(basename ${{ github.repository }} | sed 's/-/\\-/g')
           Branch: \`${{ github.ref }}\`
           Commit: \`${{ github.sha }}\`
             
