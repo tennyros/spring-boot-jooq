@@ -44,7 +44,12 @@ jobs:
           java-version: '17'
 
       - name: Remove old Gradle cache (older than 30 days)
-        run: find ~/.gradle/caches -type f -mtime +30 -delete
+        run: |
+          if [ -d ~/.gradle/caches ]; then
+            find ~/.gradle/caches -type f -mtime +30 -delete
+          else
+            echo "Gradle cache directory does not exist, skipping cleanup."
+          fi
 
       - name: Cache Gradle dependencies
         uses: actions/cache@v3
