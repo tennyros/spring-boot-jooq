@@ -16,6 +16,7 @@ permissions:
 jobs:
   test:
     runs-on: ubuntu-latest
+    environment: telegram-notifications
 
     services:
       postgres:
@@ -91,3 +92,15 @@ jobs:
             git commit -m "Update test coverage badge"
             git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/tennyros/spring-boot-jooq.git coverage-badge --force-with-lease
           fi
+
+      - name: Send Telegram notification
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          MESSAGE="🚀 CI Pipeline Status: ${{ job.status }}\n\nProject: ${{ github.repository }} #${{ github.repository }}\nBranch: ${{ github.ref }}\nCommit: ${{ github.sha }}\n\nDetails: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+
+          curl -s -X POST "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" \
+            -d "chat_id=${TELEGRAM_CHAT_ID}" \
+            -d "text=${MESSAGE}" \
+            -d "parse_mode=Markdown"
