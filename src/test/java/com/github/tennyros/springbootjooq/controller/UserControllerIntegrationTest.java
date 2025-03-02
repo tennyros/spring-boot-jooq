@@ -10,7 +10,7 @@ import org.springframework.test.context.jdbc.Sql;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = "/scripts/cleanup.sql")
-class UserControllerTest extends BaseIntegrationConfigTest {
+class UserControllerIntegrationTest extends BaseIntegrationConfigTest {
 
     @Autowired
     private TestRestTemplate restTemplate;
