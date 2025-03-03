@@ -1,4 +1,4 @@
-# Spring-boot-JOOQ demo
+# Spring-boot-JOOQ
 
 ![CI with Gradle](https://github.com/tennyros/spring-boot-jooq/workflows/CI%20Pipeline%20with%20Gradle/badge.svg)
 ![Coverage](https://github.com/tennyros/spring-boot-jooq/raw/coverage-badge/.github/badges/jacoco.svg)

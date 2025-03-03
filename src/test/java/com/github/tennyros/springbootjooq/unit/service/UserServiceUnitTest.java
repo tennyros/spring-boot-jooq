@@ -1,6 +1,7 @@
-package com.github.tennyros.springbootjooq.service;
+package com.github.tennyros.springbootjooq.unit.service;
 
 import com.github.tennyros.springbootjooq.repository.UserRepository;
+import com.github.tennyros.springbootjooq.service.UserService;
 import jooq.tables.records.AppUserRecord;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -26,10 +27,10 @@ class UserServiceUnitTest {
 
     @Test
     void testAddUser() {
-        AppUserRecord user = new AppUserRecord(1L, "ivan", "ivan@mail.ru");
+        var user = new AppUserRecord(1L, "ivan", "ivan@mail.ru");
         when(userRepository.createUser(any())).thenReturn(user);
 
-        AppUserRecord createdUser = userService.addUser("ivan", "ivan@mail.ru");
+        var createdUser = userService.addUser("ivan", "ivan@mail.ru");
 
         assertNotNull(createdUser);
         assertEquals("ivan", createdUser.getUsername());
