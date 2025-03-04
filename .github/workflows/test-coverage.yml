@@ -32,7 +32,7 @@ jobs:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: root
         ports:
-          - 5436:5432
+          - 5433:5432
         options: >-
           --health-cmd "pg_isready -U postgres -d users_db"
           --health-interval 10s
@@ -116,23 +116,23 @@ jobs:
             git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/tennyros/spring-boot-jooq.git coverage-badge --force-with-lease
           fi
 
-#      - name: Send Telegram notification
-#        if: always()
-#        env:
-#          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-#          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-#        run: |
-#          STATUS="${{ job.status }}"
-#
-#          MESSAGE="🚀 CI Pipeline Status: ${STATUS}
-#
-#          Project: \#$(basename ${{ github.repository }} | sed 's/-/\\-/g')
-#          Branch: \`${{ github.ref }}\`
-#          Commit: \`${{ github.sha }}\`
-#
-#          [Details](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})"
-#
-#          curl -s -X POST "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" \
-#          -d "chat_id=${TELEGRAM_CHAT_ID}" \
-#          -d "text=${MESSAGE}" \
-#          -d "parse_mode=MarkdownV2"
+      - name: Send Telegram notification
+        if: always()
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          STATUS="${{ job.status }}"
+
+          MESSAGE="🚀 CI Pipeline Status: ${STATUS}
+
+          Project: \#$(basename ${{ github.repository }} | sed 's/-/\\-/g')
+          Branch: \`${{ github.ref }}\`
+          Commit: \`${{ github.sha }}\`
+
+          [Details](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})"
+
+          curl -s -X POST "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" \
+          -d "chat_id=${TELEGRAM_CHAT_ID}" \
+          -d "text=${MESSAGE}" \
+          -d "parse_mode=MarkdownV2"
