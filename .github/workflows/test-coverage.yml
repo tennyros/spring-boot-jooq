@@ -32,7 +32,7 @@ jobs:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: root
         ports:
-          - 5433:5432
+          - 5436:5432
         options: >-
           --health-cmd "pg_isready -U postgres -d users_db"
           --health-interval 10s
@@ -79,11 +79,19 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew build
 
-      - name: Upload Jacoco coverage report
+      - name: Switch to coverage-badge branch
+        run: |
+          git config --global user.name 'github-actions'
+          git config --global user.email 'github-actions@github.com'
+          git fetch origin coverage-badge:coverage-badge
+          git checkout coverage-badge
+
+      - name: Main Upload Jacoco coverage report
+        if: ${{ env.ACT != 'true' }} # check for local GitHub act
         uses: actions/upload-artifact@v4
         with:
           name: jacoco-report
-          path: build/reports/jacoco/test/html
+          path: build/reports/jacoco/test/
 
       - name: Generate coverage badge
         uses: cicirello/jacoco-badge-generator@v2
@@ -91,16 +99,15 @@ jobs:
           jacoco-csv-file: build/reports/jacoco/test/jacocoTestReport.csv
           badges-directory: .github/badges
 
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Commit and push badge (only if changed)
-        run: |
-          git config --global user.name 'github-actions'
-          git config --global user.email 'github-actions@github.com'
-          git stash -u || true
-          git fetch origin coverage-badge:coverage-badge
-          git checkout -b coverage-badge || git checkout coverage-badge
-          git status
-          git stash pop || true
+        run: |          
           git add .github/badges/jacoco.svg
+          git status
           
           if git diff --cached --quiet; then
             echo "No changes to commit"
@@ -109,23 +116,23 @@ jobs:
             git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/tennyros/spring-boot-jooq.git coverage-badge --force-with-lease
           fi
 
-      - name: Send Telegram notification
-        if: always()
-        env:
-          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-        run: |
-          STATUS="${{ job.status }}"
-          
-          MESSAGE="🚀 CI Pipeline Status: ${STATUS}
-          
-          Project: \#$(basename ${{ github.repository }} | sed 's/-/\\-/g')
-          Branch: \`${{ github.ref }}\`
-          Commit: \`${{ github.sha }}\`
-          
-          [Details](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})"
-          
-          curl -s -X POST "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" \
-          -d "chat_id=${TELEGRAM_CHAT_ID}" \
-          -d "text=${MESSAGE}" \
-          -d "parse_mode=MarkdownV2"
+#      - name: Send Telegram notification
+#        if: always()
+#        env:
+#          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+#          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+#        run: |
+#          STATUS="${{ job.status }}"
+#
+#          MESSAGE="🚀 CI Pipeline Status: ${STATUS}
+#
+#          Project: \#$(basename ${{ github.repository }} | sed 's/-/\\-/g')
+#          Branch: \`${{ github.ref }}\`
+#          Commit: \`${{ github.sha }}\`
+#
+#          [Details](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})"
+#
+#          curl -s -X POST "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" \
+#          -d "chat_id=${TELEGRAM_CHAT_ID}" \
+#          -d "text=${MESSAGE}" \
+#          -d "parse_mode=MarkdownV2"
