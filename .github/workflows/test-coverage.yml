@@ -108,7 +108,7 @@ jobs:
             echo "No changes to commit"
           else
             git commit -m "Update test coverage badge"
-            git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/tennyros/spring-boot-jooq.git coverage-badge --force-with-lease
+            git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/tennyros/spring-boot-jooq.git coverage-badge --force
           fi
 
       - name: Send Telegram notification
