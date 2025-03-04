@@ -99,11 +99,6 @@ jobs:
           jacoco-csv-file: build/reports/jacoco/test/jacocoTestReport.csv
           badges-directory: .github/badges
 
-      - name: Checkout repository
-        uses: actions/checkout@v2
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-
       - name: Commit and push badge (only if changed)
         run: |          
           git add .github/badges/jacoco.svg
