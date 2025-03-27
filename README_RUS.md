@@ -24,7 +24,8 @@
 | SpringDoc OpenAPI  | 2.2.0    | Документация API              |
 
 ## 📂 Структура проекта
-```
+
+```text
 При собрке проекта формируются:
 build/
 ├── generated/
@@ -70,6 +71,7 @@ gradle.properties   # Настройки переменных для build.gradl
 При пушах в feature-ветки и pull request'ах в dev
 
 **Основные этапы:**
+
 1. Запуск PostgreSQL 15 в контейнере
 2. Кэширование Gradle-зависимостей
 3. Запуск тестов (unit + integration)
@@ -78,7 +80,8 @@ gradle.properties   # Настройки переменных для build.gradl
 6. Уведомление в Telegram
 
 **Конфигурация:**
-```
+
+```yaml
 name: CI Pipeline with Gradle
 on:
   push:
@@ -89,26 +92,33 @@ on:
 
 ## 🚀 Быстрый старт
 
-### Предварительные требования:
+### Предварительные требования
+
 1. **Java 17+**
 2. **PostgreSQL 14+** (локально или доступ к серверу БД)
 3. **Gradle 8.11+** (используется wrapper из проекта)
 
-### Настройка проекта:
+### Настройка проекта
+
 **1. Скопируйте файл конфигурации:**
-```
+
+```bash
 cp gradle.properties.example gradle.properties
 ```
-**2. Укажите в файле gralde.properties свои креды**
 
-### Для запуска в IntelliJ IDEA:
+**2. Укажите в файле gralde.properties свои креды.**
+
+### Для запуска в IntelliJ IDEA
 
 **1. Укажите в конфигурации запуска Main.java:**
-```
+
+```properties
 VM options: -Dspring.profiles.active=dev
 ```
+
 **2. Установите переменные окружения:**
-```
+
+```text
 DB_BASE=postgresql
 DB_NAME=your_db_name
 DB_PASSWORD=your_password
@@ -116,39 +126,44 @@ DB_PORT=5432
 DB_SERVER=localhost
 DB_USERNAME=your_user
 ```
-### Сборка и запуск:
+
+### Сборка и запуск
 
 **1. Собрать проект:**
 
-```
+```bash
 ./gradlew build
 ```
+
 **2. Запустить приложение:**
 
-```
+```bash
 ./gradlew bootRun
 ```
 
 **После запуска документация API будет доступна:**
-```
+
+```url
 http://localhost:8080/swagger-ui.html
 ```
 
-### Важно!
+### Важно
 
 Перед запуском убедитесь, что PostgreSQL сервер запущен
 
 ## 🧪 Тестирование
 
 **Типы тестов:**
-```
+
+```text
 unit/ - модульные тесты
 integration/ - тесты с реальной БД
 component/ - сквозные тесты
 ```
 
 **Запуск:**
-```
+
+```bash
 ./gradlew test  # Все тесты
 ./gradlew test --tests "*IT"  # Только интеграционные
 ```
