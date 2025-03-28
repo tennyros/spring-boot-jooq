@@ -6,8 +6,18 @@ updates:
       interval: "weekly"
     reviewers:
       - "tennyros"
+    labels:
+      - "dependencies"
+    commit-message:
+      prefix: "[dependabot]"
+    open-pull-requests-limit: 10
 
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
       interval: "monthly"
+    labels:
+      - "github-actions"
+    commit-message:
+      prefix: "[actions]"
+    open-pull-requests-limit: 5
