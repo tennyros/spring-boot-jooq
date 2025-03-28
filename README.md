@@ -1,27 +1,179 @@
-# Spring-boot-JOOQ
+# Spring Boot + jOOQ + Liquibase Integration
 
-![CI with Gradle](https://github.com/tennyros/spring-boot-jooq/workflows/CI%20Pipeline%20with%20Gradle/badge.svg)
+![CI Status](https://github.com/tennyros/spring-boot-jooq/workflows/CI%20Pipeline%20with%20Gradle/badge.svg)
 ![Coverage](https://github.com/tennyros/spring-boot-jooq/raw/coverage-badge/.github/badges/jacoco.svg)
+![Java 17](https://img.shields.io/badge/Java-17-blue)
+![Spring Boot 3.4.1](https://img.shields.io/badge/Spring_Boot-3.4.1-brightgreen)
+![jOOQ 3.19](https://img.shields.io/badge/jOOQ-3.19-orange)
+![Liquibase 4.26](https://img.shields.io/badge/Liquibase-4.26-lightblue)
 
-## Prerequisites
+- **Spring Boot 3** - Core framework
+- **jOOQ** - Type-safe SQL queries
+- **Liquibase** - Database migrations
+- **CI/CD** - Automated pipeline
 
-- Gradle 8.11
-- JDK 17
+## 🛠️ Technology Stack
 
-### After cloning the project you need to:
+| Component          | Version   | Purpose                        |
+|--------------------|----------|--------------------------------|
+| Spring Boot        | 3.4.1    | Backend framework             |
+| jOOQ               | 3.19.0   | SQL class generation          |
+| Liquibase          | 4.26.0   | Database version control      |
+| PostgreSQL         | 15       | Primary database              |
+| Testcontainers     | 1.20.5   | Integration testing           |
+| SpringDoc OpenAPI  | 2.2.0    | API documentation             |
 
-#### - make a copy of 'gradle.properties' (like 'cp gradle.properties.example gradle.properties') file and set your credentials according sample;
+## 📂 Project Structure
 
-#### - specify in run/debug configurations in your IDEA for Main.java:
-- VM options, for example: 
-  - -Dspring.profiles.active=dev
-- environment variables, like: 
-  - DB_BASE=postgresql
-  - DB_NAME=your_db_name
-  - DB_PASSWORD=your_password
-  - DB_PORT=1234
-  - DB_SERVER=localhost
-  - DB_USERNAME=your_username
+```text
+Build artifacts:
+build/
+├── generated/
+│   ├── source/
+│   │   └── jooq/  # Auto-generated jOOQ classes
+├── reports/
+│   ├── jacoco/
+│   │   └── test/  # JaCoCo coverage report
 
-### How to build:
-- ./gradlew build
+Source code structure (dev branch):
+README.md          # English documentation
+README_RUS.md      # Russian documentation
+.github/           # CI configuration 
+src/
+├── main/
+│   ├── java/
+│   │   └── com/github/tennyros/
+│   │       ├── config/      # Configuration classes
+│   │       ├── controller/  # REST endpoints
+│   │       ├── dto/         # Data transfer objects
+│   │       ├── repository/  # Data access (jOOQ)
+│   │       └── service/     # Business logic
+│   └── resources/
+│       ├── db/changelog/    # Liquibase migrations
+│       ├── application.yml  # Main configuration
+│       └── application-dev.yml  # Dev profile config
+├── test/
+│   ├── java/
+│   │    └── com/github/tennyros/
+│   │       ├── integration/ # Integration tests
+│   │       ├── component/   # Component tests
+│   │       └── unit/        # Unit tests
+│   └── resources/
+│       ├── scripts          # SQL test scripts
+│       └── application-test.yml # Test config
+build.gradle        # Build configuration
+gradle.properties   # Build variables
+```
+
+## 🔄 CI Pipeline
+
+**Triggers:**  
+On pushes to feature branches and pull requests to dev
+
+**Workflow stages:**
+
+1. Start PostgreSQL 15 container
+2. Cache Gradle dependencies
+3. Execute tests (unit + integration)
+4. Generate code coverage report
+5. Update coverage badge
+6. Send Telegram notification
+
+**Configuration:**
+
+```yaml
+name: CI Pipeline with Gradle
+on:
+  push:
+    branches: [feature/*, test/*, hotfix/*]
+  pull_request:
+    branches: [dev]
+```
+
+## 🚀 Quick Start
+
+### Prerequisites
+
+1. **Java 17+**
+2. **PostgreSQL 14+** (local or remote instance)
+3. **Gradle 8.11+** (wrapper included)
+
+### Project Setup
+
+**1. Copy configuration file:**
+
+```bash
+cp gradle.properties.example gradle.properties
+```
+
+**2. Update credentials in gradle.properties.**
+
+### IntelliJ IDEA Configuration
+
+**1. In Main.java run configuration:**
+
+```properties
+VM options: -Dspring.profiles.active=dev
+```
+
+**2. Set environment variables:**
+
+```text
+DB_BASE=postgresql
+DB_NAME=your_db_name
+DB_PASSWORD=your_password
+DB_PORT=5432
+DB_SERVER=localhost
+DB_USERNAME=your_user
+```
+
+### Build and Run
+
+**1. Build project:**
+
+```bash
+./gradlew build
+```
+
+**2. Run application:**
+
+```bash
+./gradlew bootRun
+```
+
+**API documentation available at:**
+
+```url
+http://localhost:8080/swagger-ui.html
+```
+
+### Important
+
+Ensure PostgreSQL server is running before startup
+
+## 🧪 Testing
+
+**Test types:**
+
+```text
+unit/ - Unit tests
+integration/ - Tests with real database
+component/ - End-to-end tests
+```
+
+**Execution:**
+
+```bash
+./gradlew test           # All tests
+./gradlew test --tests "*IT"  # Integration tests only
+```
+
+## 📌 Key Features
+
+✓ CI/CD integration
+
+✓ 80%+ code coverage (JaCoCo)
+
+✓ Automatic jOOQ generation
+
+✓ Telegram notifications
