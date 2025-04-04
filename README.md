@@ -135,7 +135,17 @@ DB_USERNAME=your_user
 ./gradlew build
 ```
 
-**2. Run application:**
+**2. Run PostgreSQL via Docker (optional, if you don’t run own DB):**
+
+```bash
+# Copy the example config (if not customized yet)  
+cp docker-compose.example.yml docker-compose.yml  
+
+# Start PostgreSQL in Docker  
+docker-compose up -d spring-boot-jooq-db  
+```
+
+**3. Run application:**
 
 ```bash
 ./gradlew bootRun
@@ -149,7 +159,10 @@ http://localhost:8080/swagger-ui.html
 
 ### Important
 
-Ensure PostgreSQL server is running before startup
+```text
+If using docker-compose, PostgreSQL will be available at localhost:5438 (default credentials: postgres/root).
+If you already have PostgreSQL, ensure application.yml/.env matches your DB settings.
+```
 
 ## 🧪 Testing
 
@@ -170,7 +183,7 @@ component/ - End-to-end tests
 
 ## 📌 Key Features
 
-✓ CI/CD integration
+✓ CI integration
 
 ✓ 80%+ code coverage (JaCoCo)
 

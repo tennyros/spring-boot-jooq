@@ -33,7 +33,7 @@ build/
 │   │   └── jooq/  # Автосгенерированные jOOQ классы, согласно структуры таблиц БД
 ├── reports/
 │   ├── jacoco/
-│   │   └── test/  № JaСoСo отчет о покрытии
+│   │   └── test/  # JaСoСo отчет о покрытии
 
 Структура кода, расположенного в репозитории (dev ветка):
 README.md          # Английская версия документации
@@ -135,7 +135,17 @@ DB_USERNAME=your_user
 ./gradlew build
 ```
 
-**2. Запустить приложение:**
+**2. Запуск PostgreSQL через Docker (опционально, если не запущена своя БД):**
+
+```bash
+# Копируем пример конфига (если ещё не настроен)
+cp docker-compose.example.yml docker-compose.yml
+
+# Запускаем PostgreSQL в Docker
+docker-compose up -d spring-boot-jooq-db
+```
+
+**3. Запустить приложение:**
 
 ```bash
 ./gradlew bootRun
@@ -149,7 +159,10 @@ http://localhost:8080/swagger-ui.html
 
 ### Важно
 
-Перед запуском убедитесь, что PostgreSQL сервер запущен
+```text
+Если вы используете docker-compose, PostgreSQL будет доступен на localhost:5433 (логин/пароль по умолчанию: postgres/root).
+Если у вас уже есть PostgreSQL, убедитесь, что настройки в application.yml/.env соответствуют вашей БД.
+```
 
 ## 🧪 Тестирование
 
@@ -170,7 +183,7 @@ component/ - сквозные тесты
 
 ## 📌 Ключевые особенности
 
-✓ CI/интеграция
+✓ CI интеграция
 
 ✓ Покрытие кода 80%+ (JaCoCo)
 
