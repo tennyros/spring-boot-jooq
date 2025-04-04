@@ -1,17 +1,17 @@
 # Example gradle.properties
 # Replace these values with actual ones in your local gradle.properties file
 
-properties.driver=org.db.Driver
-properties.url=jdbc:postgresql://localhost:port/dbname
-properties.username=username
-properties.password=password
+properties.driver=org.postgresql.Driver
+properties.url=jdbc:postgresql://localhost:5433/users_db
+properties.username=postgres
+properties.password=root
 
 jooq.generator.name=org.jooq.codegen.JavaGenerator
-jooq.database.name=org.jooq.meta.dbms.Database
-jooq.database.input_schema=schemas
-jooq.database.includes=tables
-jooq.target.package=com.example.generated
-jooq.target.directory=path/to/target/directory
+jooq.database.name=org.jooq.meta.postgres.PostgresDatabase
+jooq.database.input_schema=public
+jooq.database.includes=.*
+jooq.target.package=jooq
+jooq.target.directory=build/generated/source
 
-liquibase.changelogFile=path/to/your/db.changelog-master.xml
+liquibase.changelogFile=db/changelog/db.changelog-master.xml
 liquibase.searchPath=src/main/resources
