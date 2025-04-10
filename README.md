@@ -12,7 +12,7 @@
 - **Liquibase** - Database migrations
 - **CI/CD** - Automated pipeline
 
-## 🛠️ Technology Stack
+## Technology Stack
 
 | Component          | Version   | Purpose                        |
 |--------------------|----------|--------------------------------|
@@ -23,7 +23,7 @@
 | Testcontainers     | 1.20.5   | Integration testing           |
 | SpringDoc OpenAPI  | 2.2.0    | API documentation             |
 
-## 📂 Project Structure
+## Project Structure
 
 ```text
 Build artifacts:
@@ -65,7 +65,7 @@ build.gradle        # Build configuration
 gradle.properties   # Build variables
 ```
 
-## 🔄 CI Pipeline
+## CI Pipeline
 
 **Triggers:**  
 On pushes to feature branches and pull requests to dev
@@ -90,7 +90,7 @@ on:
     branches: [dev]
 ```
 
-## 🚀 Quick Start
+## Quick Start
 
 ### Prerequisites
 
@@ -151,7 +151,7 @@ http://localhost:8080/swagger-ui.html
 
 Ensure PostgreSQL server is running before startup
 
-## 🧪 Testing
+## Testing
 
 **Test types:**
 
@@ -168,7 +168,7 @@ component/ - End-to-end tests
 ./gradlew test --tests "*IT"  # Integration tests only
 ```
 
-## 📌 Key Features
+## Key Features
 
 ✓ CI/CD integration
 
