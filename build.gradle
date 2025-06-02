@@ -29,7 +29,7 @@ dependencies {
     implementation 'org.slf4j:slf4j-api:2.0.16'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0'
-    runtimeOnly 'org.postgresql:postgresql:42.7.5'
+    runtimeOnly 'org.postgresql:postgresql:42.7.6'
     jooqGenerator "org.postgresql:postgresql"
     testImplementation 'com.h2database:h2:2.3.232'
     implementation 'org.projectlombok:lombok'
@@ -46,7 +46,7 @@ dependencies {
     testImplementation 'org.testcontainers:junit-jupiter:1.20.5'
     liquibaseRuntime 'info.picocli:picocli:4.7.5'
     liquibaseRuntime 'org.liquibase:liquibase-core:4.31.1'
-    liquibaseRuntime 'org.postgresql:postgresql:42.7.5'
+    liquibaseRuntime 'org.postgresql:postgresql:42.7.6'
 }
 
 liquibase {
